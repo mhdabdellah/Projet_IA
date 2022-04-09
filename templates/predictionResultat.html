@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <title>resultat de la prediction </title>
+    </head>
+    <body>
+        <div>
+                <center>
+            
+                    <h1>  LA RESULTAT DE LA PREDICTION :  </h1>
+                
+                    {%if data == 1 %}
+                    <h1> c'est bien il porte une masque </h1>  
+                    <!-- <img src=''>   -->
+                
+                    {%else%}
+                    <h1> c'est grave il ne porte pas une masque </h1>
+                    <!-- <img src=''> -->
+                    
+                    {%endif%}
+                
+                        <br><br>
+                    <a href='/'>go back to home page</a>
+            
+                </center>
+        </div>
+    </body>
+
+</html>
