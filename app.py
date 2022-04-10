@@ -4,6 +4,7 @@ from warnings import filters
 import numpy as np 
 import pandas as pd 
 import matplotlib.pyplot as plt 
+from werkzeug.utils import secure_filename
 import os
 import cv2
 from mtcnn.mtcnn import MTCNN
@@ -22,48 +23,27 @@ app = Flask(__name__)
 def man():
     return render_template('home.html')
 
-@app.route('/hello', methods=["POST"])
-def hello():
-    # stocker l'image dans un variable file
-    file = request.form['image']
-    #Chargement de l’image par PIL et affichage des propriétés de l’image
-    # ajoutre try except pour gerer les exceptions
-    try:
-        # charger l'image et le stocker dans la variable photo
-        photo = Image.open(file)
-        # afficher les proprietes de l'image
-        print ("Propriétés image : ")
-        print (file , photo.format , "%dx%d" %photo.size , photo.mode)
-    except IOError :
-        print (" Erreur lors de l’ouverture du fichier !")
-    #get data donne une liste lisible par PIL uniquement
-    pixels =list(photo.getdata())
-    # print("getdata result : ",pixels)
+@app.route('/save', methods=["POST"])
+def save():
+    # file_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(f.filename))
+    f = request.files['image']
+    f_name = secure_filename(f.filename)
+    f.save(os.path.join("images",f_name))
+    # file = request.form['image']
+    # pixels =list(file.getdata())
+    # tableauPixels =np.array(file)
+    # nouvellePhoto =Image.fromarray(tableauPixels)
+    # nouvellePhoto.save("sample_test_images/image.png", "PNG")
+    return "Saved Image"
 
-    #np.array( ) permet d’obtenir une matrice du type array de numpy :
-    tableauPixels =np.array(photo)
-    # print("tableauPixels : ",tableauPixels)
-    #afficher le nombre des éléments de matrice ou bien size
-    print(np.size(tableauPixels))
-    #afficher les dimentions
-    print(np.shape(tableauPixels))
-    # on fait une copie du tableau initial pour garder la matrice originale :
-    M=np.copy(tableauPixels)
-    print("matrice tableauPixels : ",tableauPixels)
-    print("matrice M : ",M)
-    #exportation en png : très rapide et ne plante pas la console
-    # pour exporter le tableau de Pixels en image
-    nouvellePhoto =Image.fromarray(M)
-    nouvellePhoto.save("sample_test_images/image.png", "PNG")
-    return "Exported image !"
 
-@app.route('/prediction', methods=["POST"])
+# @app.route('/prediction', methods=["POST"])
 def prediction():
     #in this part we will be trying to detect if a person in a image is wearing a face mask or not ,let's start by reading in a sample image that image is out of the training samlple images
     #Image file path for sample image images  image
     # test_image_file_path = request.form['image']
     #lire l'image
-    test_image_file_path = "sample_test_images/image.png"
+    test_image_file_path = "images/image.jpeg"
     #loading the image 
     img = plt.imread(test_image_file_path)
     #initializing the detector 
@@ -95,6 +75,29 @@ def prediction():
     #we can use the np.argmax() methodto find the index with the highest probability values 
     # returns the index of maximum value
     pred = np.argmax(prediction)
+    return pred
+
+@app.route('/saveandpredict', methods=["POST"])
+def saveAndPredict():
+    # stocker l'image dans un variable file
+    file = request.files['image']
+    #Chargement de l’image par PIL et affichage des propriétés de l’image
+    # ajoutre try except pour gerer les exceptions
+    try: 
+        # charger l'image et le stocker dans la variable photo
+        photo = Image.open(file)
+    except IOError :
+         print (" Erreur lors de l’ouverture du fichier !")
+
+    #np.array( ) permet d’obtenir une matrice du type array de numpy :
+    tableauPixels =np.array(photo)
+    # on fait une copie du tableau initial pour garder la matrice originale :
+    M=np.copy(tableauPixels)
+    #exportation en png : très rapide et ne plante pas la console
+    # pour exporter le tableau de Pixels en image
+    nouvellePhoto =Image.fromarray(M)
+    nouvellePhoto.save("images/image.jpeg", "JPEG")
+    pred = prediction()
     return render_template('predictionResultat.html', data=pred)
 
 

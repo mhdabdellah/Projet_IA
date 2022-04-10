@@ -1,12 +1,18 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>resultat de la prediction </title>
-    </head>
-    <body>
-        <div>
-                <center>
-            
-                    <h1>  LA RESULTAT DE LA PREDICTION :  </h1>
+<head>
+	<title>la resultat</title>
+	<link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/style.css">
+	<link rel="stylesheet" type="text/css" href="static/css/main.css">
+	
+</head>
+<body>
+ <div class="container">
+ 	<div class="header">
+ 		<h1> LA RESULTAT DE LA PREDICTION : </h1>
+ 	</div>
+ 	<div class="main">
                 
                     {%if data == 1 %}
                     <h1> c'est bien il porte une masque </h1>  
@@ -20,9 +26,7 @@
                 
                         <br><br>
                     <a href='/'>go back to home page</a>
-            
-                </center>
-        </div>
-    </body>
-
+ 	</div>
+ </div>
+</body>
 </html>
