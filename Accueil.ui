@@ -937,7 +937,7 @@
       <x>760</x>
       <y>90</y>
       <width>271</width>
-      <height>391</height>
+      <height>381</height>
      </rect>
     </property>
     <property name="text">
@@ -1008,9 +1008,9 @@
    <widget class="QLabel" name="label_sequential">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>480</y>
-      <width>251</width>
+      <width>361</width>
       <height>51</height>
      </rect>
     </property>
@@ -1026,9 +1026,9 @@
    <widget class="QLabel" name="label_functional">
     <property name="geometry">
      <rect>
-      <x>790</x>
+      <x>710</x>
       <y>480</y>
-      <width>251</width>
+      <width>331</width>
       <height>51</height>
      </rect>
     </property>

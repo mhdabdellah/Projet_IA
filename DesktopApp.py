@@ -102,7 +102,12 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         self.L1.setText(result)
         plot_model(model, to_file='model.png')
         self.sequential.setPixmap(QPixmap("model.png"))
-        self.label_sequential.setText('Sequential Model avec 70%')
+        pourcentage_prediction = None
+        if pred == 1:
+            pourcentage_prediction = 'la pourcentage de prediction ' + str( int(prediction[0][1] * 100) ) + '%'
+        else:
+            pourcentage_prediction = 'la pourcentage de prediction ' + str( int(prediction[0][0] * 100) ) + '%' 
+        self.label_sequential.setText(pourcentage_prediction)
         print('Sequential Model')
 
     def FonctionalModel(self):
@@ -142,6 +147,14 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         x = normalize(x, axis=1)
         # making a prediction
         prediction = model.predict(x)
+        evaluation = model.evaluate(x)
+        # score = model.score(x)
+        print(evaluation)
+        # predictionp = model.predict_proba(x)
+        print(prediction)
+        print(str( prediction[0][0] * 100 ) + '%')
+        # print(predictionp)
+        # print(score)
         # interpreting these predictions
         # we can use the np.argmax() methodto find the index with the highest probability values
         # returns the index of maximum value
@@ -154,7 +167,12 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         self.L1.setText(result)
         plot_model(model, to_file='model.png')
         self.functional.setPixmap(QPixmap("model.png"))
-        self.label_functional.setText('Functional Model avec 86%')
+        pourcentage_prediction = None
+        if pred == 1:
+            pourcentage_prediction = 'la pourcentage de prediction ' + str( int(prediction[0][1] * 100) ) + '%'
+        else:
+            pourcentage_prediction = 'la pourcentage de prediction ' + str( int(prediction[0][0] * 100) ) + '%' 
+        self.label_functional.setText(pourcentage_prediction)
         print('FonctionalModel')
 
 
