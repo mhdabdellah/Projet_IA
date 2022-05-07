@@ -944,7 +944,7 @@
      <string/>
     </property>
     <property name="pixmap">
-     <pixmap>icon3.jpg</pixmap>
+     <pixmap>functional.jpg</pixmap>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
