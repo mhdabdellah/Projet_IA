@@ -104,7 +104,7 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         self.sequential.setPixmap(QPixmap("model.png"))
         pourcentage_prediction = None
         if pred == 1:
-            pourcentage_prediction = 'la pourcentage de prediction ' + str( int(prediction[0][1] * 100) ) + '%'
+            pourcentage_prediction = 'la pourcentage de prediction ' + '{:.2f} %'.foramt(prediction[0][1] * 100)
         else:
             pourcentage_prediction = 'la pourcentage de prediction ' + str( int(prediction[0][0] * 100) ) + '%' 
         self.label_sequential.setText(pourcentage_prediction)
