@@ -74,15 +74,17 @@ def makePrediction(filename):
     x = normalize(x, axis=1)
     #making a prediction
     prediction = model1.predict(x)
-    prc=prediction[0][0]* 100
+    prc1=prediction[0][0]* 100
+    prc2=prediction[0][1]* 100
     print("la valeur du preduction Sequentiel")
-    print(prc)
+    print(prc1,prc2)
+    print(prediction)
     #interpreting these predictions 
     #we can use the np.argmax() methodto find the index with the highest probability values 
     # returns the index of maximum value
     pred = np.argmax(prediction)
     print(pred)
-    return pred,prc
+    return pred,prc1,prc2
 
 def PredictionFunctionalmodel(filename):
     test_image_file_path = "static/uploads/"+ filename
@@ -113,15 +115,17 @@ def PredictionFunctionalmodel(filename):
     x = normalize(x, axis=1)
     #making a prediction
     prediction = model2.predict(x)
-    prc=prediction[0][0]* 100
+    prc1=prediction[0][0]* 100
+    prc2=prediction[0][1]* 100
     print("la valeur du preduction fonctional")
-    print(prc)
+    print(prc1,prc2)
+    print(prediction)
     #interpreting these predictions 
     #we can use the np.argmax() methodto find the index with the highest probability values 
     # returns the index of maximum value
     pred2 = np.argmax(prediction)
     print(pred2)
-    return pred2,prc
+    return pred2,prc1,prc2
 
 
 
@@ -140,7 +144,7 @@ def upload_image():
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-        resultat,prc = makePrediction(filename)
+        resultat,prc1,prc2 = makePrediction(filename)
       
 
         img = Image.open("static/uploads/"+ filename)
@@ -150,7 +154,7 @@ def upload_image():
             img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         #print('upload_image filename: ' + filename)
         flash('Image est charger par succes')
-        return render_template('index.html', filename=filename, data=resultat,pourcentage=prc)
+        return render_template('index.html', filename=filename, data=resultat,pctg1=prc1,pctg2=prc2)
     else:
         flash('Mettre un image de types  - png, jpg, jpeg, gif')
         return redirect(request.url)
@@ -176,14 +180,14 @@ def functional():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
         # resultat = makePrediction(filename)
-        resultat2,prc = PredictionFunctionalmodel(filename)
+        resultat2,prc1,prc2 = PredictionFunctionalmodel(filename)
 
         img = Image.open("static/uploads/"+ filename)
         if img.width > 300 or img.height > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))   
-    return render_template('fonctional.html', filename=filename, data2=resultat2,pourcentage=prc)
+    return render_template('fonctional.html', filename=filename, data2=resultat2,pctg1=prc1,pctg2=prc2)
 
 # #Machine learning
 # @app.route('/save', methods=["POST"])

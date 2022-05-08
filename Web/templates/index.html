@@ -37,14 +37,14 @@
     </form><br>
     <div>
         <h1 class="btn btn-info" > Models Sequentiels </h1> <br>
-        <br> <h1 class="btn btn-info" > pourcentage de prediction {{pourcentage}} % </h1> <br> 
+        <br> <h1  class="text-info" > pourcentage de prediction  porte masque {{pctg2}} %  pas de masque {{pctg1}} %  </h1> <br> 
              
                 {% if data == 1 %}
-                    <h1 class="btn btn-info" >  porte une masque </h1>  
+                    <h1 class="text-primary" >  porte une masque {{pctg2}} % </h1>  
                     <!-- <img src=''>   -->
                 
                 {% else %}
-                    <h1 class="btn btn-info"  style="color: red;">  il ne porte pas une masque </h1>
+                    <h1 class="text-danger" style="color: red;">  il ne porte pas une masque </h1><h2> {{pctg1}} %</h2>
                     <!-- <img src=''> -->
                     
                 {% endif %}

@@ -52,16 +52,16 @@
             <h1 class="btn btn-info" > Models Fonctional </h1> <br>
     
                     {% if data2 == 1 %}
-                        <h1 class="btn btn-info" > c'est bien il porte une masque  </h1>  
+                        <h1 class="text-primary" > c'est bien il porte une masque {{pctg2}} </h1>  
                         <!-- <img src=''>   -->
                     
                     {% else %}
-                        <h1 class="btn btn-info"  style="color: red;"> c'est grave il ne porte pas une masque  </h1>
+                        <h1 class="text-danger"> c'est grave il ne porte pas une masque</h1><h2> {{pctg1}} %</h2>
                         <!-- <img src=''> -->
                         
                     {% endif %}
 
-<br> <h1 class="btn btn-info" > c'est bien il porte une masque  {{pourcentage}} % </h1>         
+<br> <h1  class="text-info" > pourcentage de prediction porte masque {{pctg2}} % pourcentage de prediction pas de masque {{pctg1}} % </h1>         
     <div>
 </div>
 </div>
