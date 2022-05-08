@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>Python Projet IA</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />        
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body>
+<p><h1 align="center">Test images a une mask ou non mask</h1></p>
+<div class="container">
+<div class="row">
+    <h2>Select une fichier pour Test</h2>
+    <p>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul>
+            {% for message in messages %}
+              <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+    </p>
+    {% if filename %}
+        <div>
+            <img src="{{ url_for('display_image', filename=filename) }}">
+        </div>
+    {% endif %}
+    <!-- <form method="post" action="/" enctype="multipart/form-data">
+        <dl>
+            <p>
+                <input type="file" name="file" class="form-control" autocomplete="off" required>
+            </p>
+        </dl>
+        <p>
+            <input type="submit" value="Test" class="btn btn-info">
+        </p>
+    </form><br> 
+     <div>
+        <h1 class="btn btn-info" > Models Sequentiels </h1> 
+
+                {% if data == 1 %}
+                    <h1 class="btn btn-info" > c'est bien il porte une masque </h1>  
+           
+                
+                {% else %}
+                    <h1 class="btn btn-info"  style="color: red;"> c'est grave il ne porte pas une masque </h1>
+                
+                    
+                {% endif %}
+    <div> -->
+    <div>
+            <h1 class="btn btn-info" > Models Fonctional </h1> <br>
+    
+                    {% if data2 == 1 %}
+                        <h1 class="btn btn-info" > c'est bien il porte une masque  </h1>  
+                        <!-- <img src=''>   -->
+                    
+                    {% else %}
+                        <h1 class="btn btn-info"  style="color: red;"> c'est grave il ne porte pas une masque  </h1>
+                        <!-- <img src=''> -->
+                        
+                    {% endif %}
+
+<br> <h1 class="btn btn-info" > c'est bien il porte une masque  {{pourcentage}} % </h1>         
+    <div>
+</div>
+</div>
+</body>
+</html>
