@@ -5,7 +5,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 </head>
 <body>
-<p><h1 align="center">Test images a une mask ou non mask</h1></p>
+<p><h1 align="center">Test images a une mask ou non mask par Models Sequentiels</h1></p>
 <div class="container">
 <div class="row">
     <h2>Select une fichier pour Test</h2>
@@ -32,35 +32,51 @@
             </p>
         </dl>
         <p>
-            <input type="submit" value="Test" class="btn btn-info">
+            <input type="submit" value="Models Sequentiels Test" class="btn btn-info">
         </p>
     </form><br>
     <div>
-        <h1 class="btn btn-info" > Models Sequentiels </h1> 
-
+        <h1 class="btn btn-info" > Models Sequentiels </h1> <br>
+        <br> <h1  class="text-info" > pourcentage de prediction  porte masque {{pctg2}} %  pas de masque {{pctg1}} %  </h1> <br> 
+             
                 {% if data == 1 %}
-                    <h1 class="btn btn-info" > c'est bien il porte une masque </h1>  
+                    <h1 class="text-primary" >  porte une masque {{pctg2}} % </h1>  
                     <!-- <img src=''>   -->
                 
                 {% else %}
-                    <h1 class="btn btn-info"  style="color: red;"> c'est grave il ne porte pas une masque </h1>
+                    <h1 class="text-danger" style="color: red;">  il ne porte pas une masque </h1><h2> {{pctg1}} %</h2>
                     <!-- <img src=''> -->
                     
                 {% endif %}
     <div>
-    <div>
+    <!--  <div>
             <h1 class="btn btn-info" > Models Fonctional </h1> 
     
                     {% if data2 == 1 %}
                         <h1 class="btn btn-info" > c'est bien il porte une masque </h1>  
-                        <!-- <img src=''>   -->
+                       <img src=''> 
                     
                     {% else %}
                         <h1 class="btn btn-info"  style="color: red;"> c'est grave il ne porte pas une masque </h1>
-                        <!-- <img src=''> -->
+                        <img src=''> 
                         
                     {% endif %}
     <div>
+          -->
+
+        <form method="post" action="{{url_for('functional')}}" enctype="multipart/form-data">
+            <dl>
+                <p>
+                    <input type="file" name="file" class="form-control" autocomplete="off" required>
+                </p>
+            </dl>
+            <p>
+                <input type="submit" value="Fonctional Test" class="btn btn-info">
+            </p>
+        </form><br>
+
+
+
 </div>
 </div>
 </body>
