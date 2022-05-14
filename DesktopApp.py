@@ -8,6 +8,8 @@ from PyQt5.QtCore import QDir
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import  QApplication, QFileDialog
 from keras.models import load_model
+from keras.preprocessing import image
+import os
 from mtcnn.mtcnn import MTCNN
 #for tensor based operations
 from tensorflow.keras.utils import normalize
@@ -26,17 +28,170 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
-        self.Bt1.clicked.connect(self.open)
+        self.Bt1.clicked.connect(self.choisirImage)
         self.Bt.clicked.connect(self.SequentialModel)
-        self.Bt2.clicked.connect(self.Fermer)
+        self.Bt2.clicked.connect(self.predictionMultiImageparFunctionalModel)
+        # self.Bt2.clicked.connect(self.Fermer)
         self.Bt3.clicked.connect(self.FonctionalModel)
+        self.Bt4.clicked.connect(self.predictionMultiImageparsequentialModel)
         self.path_image = 'images'
 
     def Fermer(self):
         self.close()
 
-    def open(self):
-        path= QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.png *.jpg)')
+    # def open_directory_callback(self):
+
+    #     # path 
+    #     self._base_dir = os.getcwd()
+    #     self._images_dir = os.path.join(self._base_dir, 'test_images')
+
+    #     # open a file dialog and select the folder path 
+    #     dialog = QFileDialog()
+    #     self._folder_path = dialog.getExistingDirectory(None, 'select Folder')
+
+    #     # get the list of images in the folder and read using matplotlib and print its shape
+    #     self.list_of_images = os.listdir(self._folder_path)
+    #     self.list_of_images = sorted(self.list_of_images)
+
+    #     #length of images 
+    #     print('Number of Imagesin the selected folder :{}'.format(len(self.list_of_images)))
+    #     input_img_raw_string = '{}\\{}'.format(self._images_dir,self.list_of_images[0])
+
+    #     # show the first image in the same windows . (self.label comes from the Ui_main_window class)
+    #     self.logo.setPixmap(QPixmap(input_img_raw_string))
+    #     self.logo.show()
+
+    #     self.i = 0
+
+
+    # def next_buttton_callback():
+    #     # total images in list 
+    #     total_images = len(self.list_of_images)
+    #     if self.list_of_images:
+    #         try:
+    #             self.i = (self.i + 1) % total_images
+    #             img = self.list_of_images[self.i]
+    #             self.label.selPixmap(QPixmap('{}\\{}'.format(self._images_dir, img)))
+    #             self.label.show()
+
+    #         except ValueError as e:
+    #             print('The selected folder does not contain any images')
+
+    def predictionMultiImageparsequentialModel(self):
+        # load a model => charger le model model.h5
+        model = load_model("model.h5")
+
+        # path 
+        self._base_dir = os.getcwd()
+        self._images_dir = os.path.join(self._base_dir, 'test_images')
+
+        # open a file dialog and select the folder path 
+        dialog = QFileDialog()
+        self._folder_path = dialog.getExistingDirectory(None, 'select Folder')
+
+        # get the list of images in the folder and read using matplotlib and print its shape
+        self.list_of_images = os.listdir(self._folder_path)
+        self.list_of_images = sorted(self.list_of_images)
+
+        #length of images 
+        print('Number of Imagesin the selected folder :{}'.format(len(self.list_of_images)))
+
+        # image folder 
+        # folder_path = 'sample_test_images'
+        # dimentions of images
+        img_width, img_height = 50, 50
+
+        # load all images into a list
+        images= []
+        # prede = []
+        # for img in os.listdir(folder_path):
+        for img in self.list_of_images:
+            # print(os.listdir(folder_path))
+            print(img)
+            img = os.path.join(self._folder_path, img)
+            img = image.load_img(img, target_size=(img_width, img_height))
+            img = image.img_to_array(img)
+            img = img.reshape(-1, 50, 50, 1)
+            img = normalize(img, axis=1)
+            # img = np.expand_dims(img, axis=0)
+            # pred = model.predict(img)
+            # print(pred)
+            # prede.append(pred)
+            images.append(img)
+
+        # stack up images list to pass for prediction 
+        print(len(images))
+        images = np.array(images)
+        images = np.vstack((images))
+        print(images.shape)
+        print('yes')
+        print(len(images))
+        classes = model.predict(images)
+        print(classes)
+        # print('prede :')
+        # print(prede)
+
+    
+
+    def predictionMultiImageparFunctionalModel(self):
+        # load a model => charger le model model.h5
+        model = load_model("Functionalmodel.h5")
+
+        # path 
+        self._base_dir = os.getcwd()
+        self._images_dir = os.path.join(self._base_dir, 'test_images')
+
+        # open a file dialog and select the folder path 
+        dialog = QFileDialog()
+        self._folder_path = dialog.getExistingDirectory(None, 'select Folder')
+
+        # get the list of images in the folder and read using matplotlib and print its shape
+        self.list_of_images = os.listdir(self._folder_path)
+        self.list_of_images = sorted(self.list_of_images)
+
+        #length of images 
+        print('Number of Imagesin the selected folder :{}'.format(len(self.list_of_images)))
+
+        # image folder 
+        # folder_path = 'sample_test_images'
+        # dimentions of images
+        img_width, img_height = 50, 50
+
+        # load all images into a list
+        images= []
+        # prede = []
+        # for img in os.listdir(folder_path):
+        for img in self.list_of_images:
+            # print(os.listdir(folder_path))
+            print(img)
+            img = os.path.join(self._folder_path, img)
+            img = image.load_img(img, target_size=(img_width, img_height))
+            img = image.img_to_array(img)
+            img = img.reshape(-1, 50, 50, 1)
+            img = normalize(img, axis=1)
+            # img = np.expand_dims(img, axis=0)
+            # pred = model.predict(img)
+            # print(pred)
+            # prede.append(pred)
+            images.append(img)
+
+        # stack up images list to pass for prediction 
+        print(len(images))
+        images = np.array(images)
+        images = np.vstack((images))
+        print(images.shape)
+        print('yes')
+        print(len(images))
+        classes = model.predict(images)
+        print(classes)
+        # print('prede :')
+        # print(prede)
+
+
+
+
+    def choisirImage(self):
+        path= QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.*)')
         img = Image.open(path[0])
         # tableauPixels = np.array(img)
         # nouvellePhoto = Image.fromarray(tableauPixels)
@@ -49,7 +204,7 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
             print(nouvellePhoto)
             nouvellePhoto.save("images/image.jpeg", "JPEG")
             self.logo.setPixmap(QPixmap("images/image.jpeg"))
-            img.show()
+            # img.show()
 
 
 
@@ -153,6 +308,7 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         # predictionp = model.predict_proba(x)
         print(prediction)
         print(str( prediction[0][0] * 100 ) + '%')
+        print('{:.2f} %'.format(prediction[0][1] * 100))
         # print(predictionp)
         # print(score)
         # interpreting these predictions
@@ -172,6 +328,12 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
             pourcentage_prediction = 'la pourcentage de prediction ' + str( int(prediction[0][1] * 100) ) + '%'
         else:
             pourcentage_prediction = 'la pourcentage de prediction ' + str( int(prediction[0][0] * 100) ) + '%' 
+
+        # if pred == 1:
+        #     pourcentage_prediction = 'la pourcentage de prediction {:.2f} %'.foramt(prediction[0][1] * 100)
+        # else:
+        #     pourcentage_prediction = 'la pourcentage de prediction {:.2f} %'.foramt(prediction[0][0] * 100) 
+           
         self.label_functional.setText(pourcentage_prediction)
         print('FonctionalModel')
 
