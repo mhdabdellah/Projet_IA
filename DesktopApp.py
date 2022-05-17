@@ -36,7 +36,7 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         self.close()
 
     def open(self):
-        path= QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.png *.jpg)')
+        path= QFileDialog.getOpenFileName(self, 'Select Photo', QDir.currentPath(), 'Images (*.*)')
         img = Image.open(path[0])
         # tableauPixels = np.array(img)
         # nouvellePhoto = Image.fromarray(tableauPixels)
