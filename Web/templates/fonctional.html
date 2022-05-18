@@ -8,7 +8,7 @@
 <p><h1 align="center">Test images a une mask ou non mask</h1></p>
 <div class="container">
 <div class="row">
-    <h2>Select une fichier pour Test</h2>
+    
     <p>
         {% with messages = get_flashed_messages() %}
           {% if messages %}
@@ -20,21 +20,23 @@
           {% endif %}
         {% endwith %}
     </p>
- {% if filename %}
+{% for filename ,data,p1,p2 in (RESULTAT)  %}
     <div>
         <img src="{{ url_for('display_image', filename=filename) }}">
-
+      
         {% if data == 1 %}
-        <h4 class="text-primary" >  porte une masque {{pctg2}} % </h4>  
-        <!-- <img src=''>   -->
-    
-       {% elif data == 0 %}
-        <h4 class="text-danger" style="color: red;">  il ne porte pas une masque </h4><h4> {{pctg1}} %</h4>
-        <!-- <img src=''> -->
-        
-      {% endif %}
-    </div>
-{% endif %}
+                  
+                        
+                       <h4 class="text-primary" > {{p2*100}} % porte une masque </h4>  
+                    <!-- <img src=''>   -->
+                
+        {% elif data == 0 %}
+                      <h4 class="text-danger" style="color: red;"> {{p1*100 }}% il ne porte pas une masque </h4>
+                    <!-- <img src=''> -->
+        {% endif%}
+                    
+    </div>       
+{% endfor %}
     <!-- <form method="post" action="/" enctype="multipart/form-data">
         <dl>
             <p>
@@ -61,7 +63,7 @@
     <div>
            
 
-<br> <h1  class="text-info" > pourcentage de prediction porte masque {{pctg2}} % pourcentage de prediction pas de masque {{pctg1}} % </h1>         
+     
     <div>
 </div>
 </div>
