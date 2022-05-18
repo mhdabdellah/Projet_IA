@@ -20,15 +20,34 @@
           {% endif %}
         {% endwith %}
     </p>
-    {% if filename %}
-        <div>
-            <img src="{{ url_for('display_image', filename=filename) }}">
-        </div>
-    {% endif %}
+  
+        {% for filename ,data,p1,p2 in (RESULTAT)  %}
+                <div>
+                    <img src="{{ url_for('display_image', filename=filename) }}">
+                  
+                    {% if data == 1 %}
+                              
+                                    
+                                   <h4 class="text-primary" > {{p2*100}} % porte une masque </h4>  
+                                <!-- <img src=''>   -->
+                            
+                    {% elif data == 0 %}
+                                  <h4 class="text-danger" style="color: red;"> {{p1*100 }}% il ne porte pas une masque </h4>
+                                <!-- <img src=''> -->
+                    {% endif%}
+                                
+                </div>       
+        {% endfor %}
+        
+
+        
+
+  
+
     <form method="post" action="/" enctype="multipart/form-data">
         <dl>
             <p>
-                <input type="file" name="file" class="form-control" autocomplete="off" required>
+                <input type="file" name="files[]" multiple="true" autocomplete="off" class="form-control" required>
             </p>
         </dl>
         <p>
@@ -37,17 +56,8 @@
     </form><br>
     <div>
         <h1 class="btn btn-info" > Models Sequentiels </h1> <br>
-        <br> <h1  class="text-info" > pourcentage de prediction  porte masque {{pctg2}} %  pas de masque {{pctg1}} %  </h1> <br> 
+        <br> <h1  class="text-info" > pourcentage de prediction  porte une masque {{pctg2}} %  pas de masque {{pctg1}} %  </h1> <br> 
              
-                {% if data == 1 %}
-                    <h1 class="text-primary" >  porte une masque {{pctg2}} % </h1>  
-                    <!-- <img src=''>   -->
-                
-                {% else %}
-                    <h1 class="text-danger" style="color: red;">  il ne porte pas une masque </h1><h2> {{pctg1}} %</h2>
-                    <!-- <img src=''> -->
-                    
-                {% endif %}
     <div>
     <!--  <div>
             <h1 class="btn btn-info" > Models Fonctional </h1> 

@@ -29,7 +29,7 @@ app = Flask(__name__)
  
 UPLOAD_FOLDER = 'static/uploads/'
  
-app.secret_key = "secret key"
+app.secret_key = "cairocoders-ednalan"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
  
@@ -45,46 +45,81 @@ def home():
 
 
 # @app.route('/prediction', methods=["POST"])
-def makePrediction(filename):
-    test_image_file_path = "static/uploads/"+ filename
-    #loading the image 
-    img = plt.imread(test_image_file_path)
-    #initializing the detector 
-    detector = MTCNN()
-    #Detecting the face in the image 
-    faces = detector.detect_faces(img)
-    #next performing face detector and image pre-processing together
-    # reading in the image as a grayscale image 
-    img_array = cv2.imread(test_image_file_path, cv2.IMREAD_GRAYSCALE)
-    #initializing the detector .3
-    detector = MTCNN()
-    #detecting the faces in in the images
-    faces = detector.detect_faces(img)
-    #getting the values for bounding box 
-    x1,x2,width,height= faces[0]["box"]
-    #selection the portion covred by the bounding box
-    crop_image = img_array[x2 : x2 + height, x1 : x1 + width]
-    #resizing the image 
-    img_size = 50
-    new_img_array = cv2.resize(crop_image,(img_size,img_size))
-    # some more pre-processing
-    #reshaping image
-    x = new_img_array.reshape(-1,50,50,1)
-    #normalizing to the range between 0 and 1
-    x = normalize(x, axis=1)
-    #making a prediction
-    prediction = model1.predict(x)
-    prc1=prediction[0][0]* 100
-    prc2=prediction[0][1]* 100
-    print("la valeur du preduction Sequentiel")
-    print(prc1,prc2)
-    print(prediction)
-    #interpreting these predictions 
-    #we can use the np.argmax() methodto find the index with the highest probability values 
-    # returns the index of maximum value
-    pred = np.argmax(prediction)
-    print(pred)
-    return pred,prc1,prc2
+def makePrediction(filenames):
+    images= []
+    for filename in filenames:
+        test_image_file_path = "static/uploads/"+ filename
+        #loading the image 
+        img = plt.imread(test_image_file_path)
+        #initializing the detector 
+        detector = MTCNN()
+        #Detecting the face in the image 
+        faces = detector.detect_faces(img)
+        #next performing face detector and image pre-processing together
+        # reading in the image as a grayscale image 
+        img_array = cv2.imread(test_image_file_path, cv2.IMREAD_GRAYSCALE)
+        #initializing the detector .3
+        detector = MTCNN()
+        #detecting the faces in in the images
+        faces = detector.detect_faces(img)
+        #getting the values for bounding box 
+        x1,x2,width,height= faces[0]["box"]
+        #selection the portion covred by the bounding box
+        crop_image = img_array[x2 : x2 + height, x1 : x1 + width]
+        #resizing the image 
+        img_size = 50
+        new_img_array = cv2.resize(crop_image,(img_size,img_size))
+        # some more pre-processing
+        #reshaping image
+        x = new_img_array.reshape(-1,50,50,1)
+        #normalizing to the range between 0 and 1
+        x = normalize(x, axis=1)
+        image=images.append(x)
+        print('images1')
+        print(image)
+    image = np.array(images)
+    image = np.vstack((images))
+    print('images2')
+    print(image)
+    classes = model1.predict(image) 
+    print('class')
+    print(classes) 
+    preds=[]
+    prc1=[]
+    prc2 =[]    
+    for prediction in classes :
+            pred0 = np.argmax(prediction)
+            prc01,prc02=prediction
+            preds.append(pred0)
+            prc1.append(prc01)
+            prc2.append(prc02)
+            print('images3')
+            print(prc1)
+            print(prc2)
+            print(preds)
+           
+
+    print('images4')
+    print(prc1)
+    print(prc2)
+    print(preds)
+    return preds,prc1,prc2
+
+
+    # classes = model1.predict(images)
+    # prc1=prediction[0][0]* 100
+    # prc2=prediction[0][1]* 100
+    # print("la valeur du preduction Sequentiel")
+    # print(prc1,prc2)
+    # print(prediction)
+    #     #interpreting these predictions 
+    #     #we can use the np.argmax() methodto find the index with the highest probability values 
+    #     # returns the index of maximum value
+    # pred = np.argmax(prediction)
+    # print(pred)
+    # return pred,prc1,prc2    #making a prediction
+
+        
 
 def PredictionFunctionalmodel(filename):
     test_image_file_path = "static/uploads/"+ filename
@@ -133,33 +168,37 @@ def PredictionFunctionalmodel(filename):
  
 @app.route('/', methods=['POST'])
 def upload_image():
-    if 'file' not in request.files:
+    if 'files[]' not in request.files:
         flash('No file part')
         return redirect(request.url)
-    file = request.files['file']
-    if file.filename == '':
-        flash('No image selected for uploading')
-        return redirect(request.url)
-    if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    # if files == '':
+    #     flash('No image selected for uploading')
+    #     return redirect(request.url)
+    files = request.files.getlist('files[]')
+    file_names=[] 
+    for file in files:   
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_names.append(filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename)) 
+            
+            img = Image.open("static/uploads/"+ filename)
+            
+            if img.width > 190 or img.height > 150:
+                output_size = (190, 150)
+                img.thumbnail(output_size)
+                img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            #print('upload_image filename: ' + filename)
+          
+        else:
+            flash('Mettre un image de types  - png, jpg, jpeg, gif')
+            return redirect(request.url)
 
-        resultat,prc1,prc2 = makePrediction(filename)
-      
-
-        img = Image.open("static/uploads/"+ filename)
-        if img.width > 300 or img.height > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #print('upload_image filename: ' + filename)
-        flash('Image est charger par succes')
-        return render_template('index.html', filename=filename, data=resultat,pctg1=prc1,pctg2=prc2)
-    else:
-        flash('Mettre un image de types  - png, jpg, jpeg, gif')
-        return redirect(request.url)
-
-
+    flash('Image est charger par succes')
+    preds,prc1,prc2 = makePrediction(file_names)
+    Zipp=zip(file_names,preds,prc1,prc2)
+    return render_template('index.html', RESULTAT=Zipp )
+    # return render_template('index.html', filenames=file_names, datas=preds,pctgs1=prc1,pctgs2=prc2)
  
 @app.route('/display/<filename>')
 def display_image(filename):
@@ -186,7 +225,8 @@ def functional():
         if img.width > 300 or img.height > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
-            img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))   
+            img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
     return render_template('fonctional.html', filename=filename, data2=resultat2,pctg1=prc1,pctg2=prc2)
 
 # #Machine learning

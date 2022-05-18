@@ -155,7 +155,7 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         classes = model.predict(images)
         print(classes)
         result_prediction = []
-        centage_prediction = []
+        # centage_prediction = []
         result1 = ""
         result2 = ""
         pourcentage_prediction1 = ""

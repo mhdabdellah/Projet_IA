@@ -20,11 +20,21 @@
           {% endif %}
         {% endwith %}
     </p>
-    {% if filename %}
-        <div>
-            <img src="{{ url_for('display_image', filename=filename) }}">
-        </div>
-    {% endif %}
+ {% if filename %}
+    <div>
+        <img src="{{ url_for('display_image', filename=filename) }}">
+
+        {% if data == 1 %}
+        <h4 class="text-primary" >  porte une masque {{pctg2}} % </h4>  
+        <!-- <img src=''>   -->
+    
+       {% elif data == 0 %}
+        <h4 class="text-danger" style="color: red;">  il ne porte pas une masque </h4><h4> {{pctg1}} %</h4>
+        <!-- <img src=''> -->
+        
+      {% endif %}
+    </div>
+{% endif %}
     <!-- <form method="post" action="/" enctype="multipart/form-data">
         <dl>
             <p>
@@ -49,17 +59,7 @@
                 {% endif %}
     <div> -->
     <div>
-            <h1 class="btn btn-info" > Models Fonctional </h1> <br>
-    
-                    {% if data2 == 1 %}
-                        <h1 class="text-primary" > c'est bien il porte une masque {{pctg2}} </h1>  
-                        <!-- <img src=''>   -->
-                    
-                    {% else %}
-                        <h1 class="text-danger"> c'est grave il ne porte pas une masque</h1><h2> {{pctg1}} %</h2>
-                        <!-- <img src=''> -->
-                        
-                    {% endif %}
+           
 
 <br> <h1  class="text-info" > pourcentage de prediction porte masque {{pctg2}} % pourcentage de prediction pas de masque {{pctg1}} % </h1>         
     <div>
