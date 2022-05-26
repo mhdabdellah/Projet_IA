@@ -16,22 +16,24 @@ from tensorflow.keras.utils import normalize
 # visualisation de la model pour bien comprendre ce qui va se passé
 from tensorflow.keras.utils import plot_model
 
-
 class Second(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(Second, self).__init__(parent)
 
 
+
+
 qtCreatorFile = "Accueil.ui"
 
 Ui_MainWindow, QtBaseClass = uic.loadUiType(qtCreatorFile)
-class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
+class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow,QLabel):
 
     def __init__(self):
         QtWidgets.QMainWindow.__init__(self)
         Ui_MainWindow.__init__(self)
         self.setupUi(self)
         self.Bt1.clicked.connect(self.choisirImage)
+        # self.Bt1.clicked.connect(self.show_new_windows)
         self.Bt.clicked.connect(self.SequentialModel)
         self.Bt2.clicked.connect(self.predictionMultiImageparFunctionalModel)
         # self.Bt2.clicked.connect(self.Fermer)
@@ -39,10 +41,19 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         self.Bt4.clicked.connect(self.predictionMultiImageparsequentialModel)
         self.path_image = 'images'
         self.dialogs = list()
+        #  self.label.selPixmap(QPixmap('{}\\{}'.format(self._images_dir, img)))
+        # self.label.show()
 
     def Fermer(self):
         self.close()
 
+    def show_new_windows(self, checked):
+        dialog = Second(self)
+        # self.label = QLabel("Another Window")
+        # dialog.addWidget(QLabel("Another Window"))
+        # self.setLayout(dialog)
+        self.dialogs.append(dialog)
+        dialog.show()
     # def open_directory_callback(self):
 
     #     # path 
@@ -380,13 +391,14 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         # we can use the np.argmax() methodto find the index with the highest probability values
         # returns the index of maximum value
         pred = np.argmax(prediction)
+        print(pred)
         result = None
         if pred == 1:
             result = "c'est bien il porte une masque"
         else:
             result = "c'est grave il ne porte pas une masque"
         self.L1.setText(result)
-        # plot_model(model, to_file='model.png')
+        plot_model(model, to_file='model.png')
         self.sequential.setPixmap(QPixmap("model.png"))
         pourcentage_prediction = None
         if pred == 1:
@@ -438,8 +450,8 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         print(evaluation)
         # predictionp = model.predict_proba(x)
         print(prediction)
-        # print(str( prediction[0][0] * 100 ) + '%')
-        # print('{:.2f} %'.format(prediction[0] * 100))
+        print(str( prediction[0][0] * 100 ) + '%')
+        print('{:.2f} %'.format(prediction[0] * 100))
         # print(predictionp)
         # print(score)
         # interpreting these predictions
@@ -452,7 +464,7 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         else:
             result = "c'est grave il ne porte pas une masque"
         self.L1.setText(result)
-        # plot_model(model, to_file='model.png')
+        plot_model(model, to_file='model.png')
         self.functional.setPixmap(QPixmap("model.png"))
         pourcentage_prediction = None
         if pred == 1:
