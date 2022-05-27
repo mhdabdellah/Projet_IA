@@ -201,8 +201,8 @@ def upload_image():
             
             img = Image.open("static/uploads/"+ filename)
             
-            if img.width > 190 or img.height > 150:
-                output_size = (190, 150)
+            if img.width > 200 or img.height > 190:
+                output_size = (200, 190)
                 img.thumbnail(output_size)
                 img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             #print('upload_image filename: ' + filename)
@@ -243,8 +243,8 @@ def functional():
             
             img = Image.open("static/uploads/"+ filename)
             
-            if img.width > 190 or img.height > 150:
-                output_size = (190, 150)
+            if img.width > 200 or img.height > 190:
+                output_size = (200, 190)
                 img.thumbnail(output_size)
                 img.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             #print('upload_image filename: ' + filename)
