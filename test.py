@@ -19,6 +19,17 @@ from tensorflow.keras.utils import plot_model
 class Second(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(Second, self).__init__(parent)
+        pic = QLabel(self)
+        pic.setPixmap(QPixmap(""))
+        pic.resize(255,80)
+        pic.move(20,90)
+        pic.show()
+
+        pic1 = QLabel(self)
+        pic1.setPixmap(QPixmap(""))
+        pic1.resize(255,80)
+        pic1.move(20,90)
+        pic1.show()
 
 
 

@@ -16,10 +16,16 @@ from tensorflow.keras.utils import normalize
 # visualisation de la model pour bien comprendre ce qui va se passé
 from tensorflow.keras.utils import plot_model
 
+CreatorFile = "second.ui"
+Ui_MainWindows, QtBaseClasse = uic.loadUiType(CreatorFile)
 
-class Second(QtWidgets.QMainWindow):
-    def __init__(self, parent=None):
-        super(Second, self).__init__(parent)
+class Second(QtWidgets.QMainWindow,Ui_MainWindows):
+    # def __init__(self, parent=None):
+    #     super(Second, self).__init__(parent)
+    def __init__(self):
+        QtWidgets.QMainWindow.__init__(self)
+        Ui_MainWindow.__init__(self)
+        self.setupUi(self)
 
 
 qtCreatorFile = "Accueil.ui"
@@ -42,6 +48,12 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
 
     def Fermer(self):
         self.close()
+
+    def open_window(self):
+        self.window = QtWidgets.QMainWindow()
+        self.ui = Second()
+        self.ui.setupUi(self.window)
+        self.window.show()
 
     # def open_directory_callback(self):
 
@@ -92,6 +104,7 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         # open a file dialog and select the folder path 
         dialog = QFileDialog()
         self._folder_path = dialog.getExistingDirectory(None, 'select Folder')
+        print(self._folder_path)
 
         # get the list of images in the folder and read using matplotlib and print its shape
         self.list_of_images = os.listdir(self._folder_path)
@@ -107,11 +120,13 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
 
         # load all images into a list
         images= []
+        Photo = []
         # prede = []
         # for img in os.listdir(folder_path):
         for img in self.list_of_images:
             # print(os.listdir(folder_path))
             print(img)
+            Photo.append(img)
             path = os.path.join(self._folder_path, img)
              # loading the image
             img = plt.imread(path)
@@ -165,40 +180,67 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         pourcentage_prediction1 = ""
         pourcentage_prediction2 = ""
         i = 0
-        for prediction in classes :
+        for prediction in classes:
             pred = np.argmax(prediction)
             print(prediction)
             print(pred)
             pred0 , pred1 = prediction
             print(pred0)
             print(pred1)
+            print(Photo)
             # print(prediction[1][0])
             # print(prediction[0][0])
             
             if pred == 1:
-                result1 = "c'est bien il porte une masque et "
+                result1 = "c'est bien il porte une masque"
                 pourcentage_prediction1 = 'la pourcentage de prediction ' + str( int(pred1 * 100) ) + '%'
                 # print(prediction[0][1])
                 result_prediction.append(result1 + pourcentage_prediction1)
+                
+                # dialog = Second(self)
+                # self.dialogs.append(dialog)
+                # dialog.show()
+                self.window = QtWidgets.QMainWindow()
+                self.ui = Second()
+                self.ui.setupUi(self.window)
+                self.ui.L1.setText(result1)
+                self.ui.label_sequential.setText(pourcentage_prediction1)
+                self.ui.label_functional.setText(Photo[i])
+                self.ui.logo.setPixmap(QPixmap(self._folder_path+"/"+Photo[i]))
+                print(self._folder_path)
+                print(Photo[i])
+                self.dialogs.append(self.window)
+                self.window.show()
                 i+= 1
-                dialog = Second(self)
-                self.dialogs.append(dialog)
-                dialog.show()
+                # self.open_window()
             else:
-                result2 = "c'est grave il ne porte pas une masque et "
+                result2 = "c'est grave il ne porte pas une masque"
                 pourcentage_prediction2 = 'la pourcentage de prediction ' + str( int(pred0 * 100) ) + '%'
                 # print(prediction[0][0])
                 result_prediction.append(result2 + pourcentage_prediction2)
+                
+                # dialog = Second(self)
+                # self.dialogs.append(dialog)
+                # dialog.show()
+                self.window = QtWidgets.QMainWindow()
+                self.ui = Second()
+                self.ui.setupUi(self.window)
+                self.ui.L1.setText(result2)
+                self.ui.label_sequential.setText(pourcentage_prediction2)
+                self.ui.label_functional.setText(Photo[i])
+                self.ui.logo.setPixmap(QPixmap(self._folder_path + "/"+Photo[i]))
+                print(self._folder_path)
+                print(Photo[i])
+                self.dialogs.append(self.window)
+                self.window.show()
                 i+= 1
-                dialog = Second(self)
-                self.dialogs.append(dialog)
-                dialog.show()
+                # self.open_window(self)
 
         print(result1)
         print(result2)
         result = result1 + result2
         print(result_prediction)
-        self.L1.setText(result)
+        # self.L1.setText(result)
 
     
 
@@ -228,11 +270,13 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
 
         # load all images into a list
         images= []
+        Photo = []
         # prede = []
         # for img in os.listdir(folder_path):
         for img in self.list_of_images:
             # print(os.listdir(folder_path))
             print(img)
+            Photo.append(img)
             path = os.path.join(self._folder_path, img)
              # loading the image
             img = plt.imread(path)
@@ -283,7 +327,7 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
         result2 = ""
         pourcentage_prediction1 = ""
         pourcentage_prediction2 = ""
-        i = 1
+        i = 0
         for prediction in classes :
             pred = np.argmax(prediction)
             print(prediction)
@@ -295,29 +339,49 @@ class MyAppp(QtWidgets.QMainWindow,Ui_MainWindow):
             # print(prediction[0][0])
             
             if pred == 1:
-                result1 = "c'est bien il porte une masque et "
+                result1 = "c'est bien il porte une masque"
                 pourcentage_prediction1 = 'la pourcentage de prediction ' + str( int(pred1 * 100) ) + '%'
                 # print(prediction[0][1])
                 result_prediction.append(result1 + pourcentage_prediction1)
+                
+                # dialog = Second(self)
+                # self.dialogs.append(dialog)
+                # dialog.show()
+                self.window = QtWidgets.QMainWindow()
+                self.ui = Second()
+                self.ui.setupUi(self.window)
+                self.ui.L1.setText(result1)
+                self.ui.label_sequential.setText(pourcentage_prediction1)
+                self.ui.label_functional.setText(Photo[i])
+                self.ui.logo.setPixmap(QPixmap(self._folder_path + "/"+Photo[i]))
+                self.dialogs.append(self.window)
+                self.window.show()
                 i+= 1
-                dialog = Second(self)
-                self.dialogs.append(dialog)
-                dialog.show()
             else:
-                result2 = "c'est grave il ne porte pas une masque et "
+                result2 = "c'est grave il ne porte pas une masque"
                 pourcentage_prediction2 = 'la pourcentage de prediction ' + str( int(pred0 * 100) ) + '%'
                 # print(prediction[0][0])
                 result_prediction.append(result2 + pourcentage_prediction2)
+                
+                # dialog = Second(self)
+                # self.dialogs.append(dialog)
+                # dialog.show()
+                self.window = QtWidgets.QMainWindow()
+                self.ui = Second()
+                self.ui.setupUi(self.window)
+                self.ui.L1.setText(result2)
+                self.ui.label_sequential.setText(pourcentage_prediction2)
+                self.ui.label_functional.setText(Photo[i])
+                self.ui.logo.setPixmap(QPixmap(self._folder_path + "/"+Photo[i]))
+                self.dialogs.append(self.window)
+                self.window.show()
                 i+= 1
-                dialog = Second(self)
-                self.dialogs.append(dialog)
-                dialog.show()
 
         print(result1)
         print(result2)
         result = result1 + result2
         print(result_prediction)
-        self.L1.setText(result)
+        # self.L1.setText(result)
 
 
 
